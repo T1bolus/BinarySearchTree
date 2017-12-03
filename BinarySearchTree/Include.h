@@ -6,5 +6,6 @@
 #include <algorithm>
 #include <string>
 #include <stack>
+#include <cassert>
 
 using namespace std;

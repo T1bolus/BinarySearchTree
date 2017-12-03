@@ -39,8 +39,31 @@ int main()
 	buf = new Node("hjd345h324235k", 13);
 	baum.insert(buf);
 
-	Node *bla = baum.seek(8);
+	//baum.root->left->key = 100;
+	
+	try {
+		cout << baum.check(baum.root) << endl;
+	}
+	catch (...)
+	{
+		cerr << "Fehler!\n";
+	}
 
+	Node *bla = baum.seek(5);
+	cout << bla->value << endl;
+	baum.destroy(5);
+	bla = baum.seek(5);
+	if (bla != NULL)
+		cout << bla->value << endl;
+	else
+		cout << "Cant find dis Node!"<<endl;
 
+	try {
+		cout << baum.check(baum.root) << endl;
+	}
+	catch (...)
+	{
+		cerr << "Fehler!\n";
+	}
 
 }

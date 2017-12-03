@@ -121,42 +121,74 @@ bool BinarySearchTree::destroy(int kValue)
 	}
 	else
 	{
-		//parent_replacement = res;
-		//replacement = res->left;
-		//is_left = 1; /* Replacement is left child of parent */
-		//while (replacement->right != NULL)
-		//{
-		//	parent_replacement = replacement;
-		//	replacement = replacement->right;
-		//	is_left = 0; // Replacement is right child of parent
-		//}
+		Node *parent_replacement = res;
+		Node *replacement = res->left;
+		int is_left = 1; /* Replacement is left child of parent */
+		while (replacement->right != NULL)
+		{
+			parent_replacement = replacement;
+			replacement = replacement->right;
+			is_left = 0; // Replacement is right child of parent
+		}
 
 
-		///* Copy data */
-		//ptr->data = replacement->data;
-		///* Two broad cases
-		//* i) Replacement is left child of ptr
-		//*   (and could be having 0 or 1 children)
-		//* ii) Replacement is right (grand)child of ptr->left
-		//*/
+		/* Copy data */
+		res = replacement;
+		/* Two broad cases
+		* i) Replacement is left child of ptr
+		*   (and could be having 0 or 1 children)
+		* ii) Replacement is right (grand)child of ptr->left
+		*/
 
-		//if (is_left)
-		//{
-		//	// case i : replacement is left child of ptr.
-		//	assert(replacement->right == NULL);
-		//	ptr->left = replacement->left;
-		//	free(replacement);
-		//}
-		//else
-		//{
-		//	// case ii : replacement is right grand(child of ptr->left
-		//	parent_replacement->right = replacement->left;
-		//	free(replacement);
-		//}
+		if (is_left)
+		{
+			// case i : replacement is left child of ptr.
+			assert(replacement->right == NULL);
+			res->left = replacement->left;
+			//delete replacement;
+		}
+		else
+		{
+			// case ii : replacement is right grand(child of ptr->left
+			parent_replacement->right = replacement->left;
+			//delete replacement;
+		}
 	}
 
 	delete res;
 	return true;
 
+}
+
+bool BinarySearchTree::check(Node *node)
+{
+	if (node->left == NULL && node->right == NULL)
+		return true;
+	else if (node->left == NULL)
+	{
+		if (node->getKey() < node->right->getKey())
+			check(node->right);
+		else
+			throw string("fail");
+	}
+	else if (node->right == NULL)
+	{
+		if (node->left->getKey() < node->getKey())
+			check(node->left);
+		else
+			throw string("fail");
+	}
+	else
+	{
+		if (node->left->getKey() < node->getKey() < node->right->getKey())
+		{
+			check(node->left);
+			check(node->right);
+		}
+		else
+			throw string("fail");
+	}
+
+	return true;
 }
 

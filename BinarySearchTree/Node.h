@@ -37,11 +37,11 @@ public:
 	Node* right;
 	Node* left;
 	Node* parent;
+	string value;
 
-private:
+//private:
 	int key;
 	//char *value;
-	string value;
 	/*usign valueLength;*/
 };
 

@@ -10,7 +10,8 @@ public:
 	Node *seek(int kValue);
 	bool insert(Node*);
 	bool destroy(int kValue);
-private:
+	bool check(Node *start);
+//private:
 
 	Node* root;
 };
