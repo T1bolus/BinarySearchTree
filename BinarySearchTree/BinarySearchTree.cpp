@@ -5,6 +5,7 @@
 BinarySearchTree::BinarySearchTree()
 {
 	root = NULL;
+	height = 0;
 }
 
 
@@ -34,33 +35,6 @@ Node * BinarySearchTree::seek(int k)
 	return NULL;
 }
 
-Node * BinarySearchTree::seek(string &value)
-{
-	queue<Node *> st;
-	if (root == NULL) return NULL;
-
-	if (root->left != NULL)
-		st.push(root->left);
-	if (root->right != NULL)
-		st.push(root->right);
-
-	while (!st.empty())
-	{
-		Node *i = st.front();
-		st.pop();
-
-		if (i->left != NULL)
-			st.push(i->left);
-		if (i->right != NULL)
-			st.push(i->right);
-
-		if (i->getValue() == value)
-			return i;
-
-	}
-
-	return NULL;
-}
 
 bool BinarySearchTree::insert(Node *u)
 {
@@ -188,17 +162,29 @@ bool BinarySearchTree::destroy(Node *res)
 
 
 
-bool BinarySearchTree::destroy(string value)
+void BinarySearchTree::seeknDestroy(string value)
 {
-	bool ergebnis = false;
-	Node *res = seek(value);
-	while (res != NULL)
+	queue<Node *> st;
+	if (root == NULL) return;
+
+	if (root->left != NULL)
+		st.push(root->left);
+	if (root->right != NULL)
+		st.push(root->right);
+
+	while (!st.empty())
 	{
-		ergebnis = true;
-		destroy(res);
-		res = seek(value);
+		Node *i = st.front();
+		st.pop();
+
+		if (i->left != NULL)
+			st.push(i->left);
+		if (i->right != NULL)
+			st.push(i->right);
+
+		if (i->getValue() == value)
+			destroy(i);
 	}
-	return ergebnis;
 }
 
 bool BinarySearchTree::check(Node * start)
@@ -266,5 +252,36 @@ void BinarySearchTree::displayTree()
 	cout << "_________________\n";
 
 
+}
+
+void BinarySearchTree::calcHigh(Node *node, unsigned int step = -1)
+{
+	step++;
+	stufeSumme += step;
+	anzahl++;
+
+	if (step > height)
+		height = step;
+
+	if (node->left != NULL)
+		calcHigh(node->left,step);
+	if (node->right != NULL)
+		calcHigh(node->right,step);
+}
+
+
+unsigned int BinarySearchTree::getHeight()
+{
+	calcHigh(root);
+	return height + 1;
+}
+
+double BinarySearchTree::getAvgLevel()
+{
+	anzahl = 0;
+	stufeSumme = 0;
+	calcHigh(root);
+
+	return (double)stufeSumme / (double)anzahl;
 }
 

@@ -56,8 +56,14 @@ int main()
 		cout << "Cant find dis Node!" << endl;
 
 	baum.displayTree();
-	baum.destroy("b");
+	cout << "Tree height: " << baum.getHeight() << endl;
+	cout << "Tree AvgLevel: " << baum.getAvgLevel() << endl;
+	baum.seeknDestroy("a");
 	baum.displayTree();
+	cout << "Tree height: " << baum.getHeight() << endl;
+	cout << "Tree AvgLevel: " << baum.getAvgLevel() << endl;
+
+
 
 
 	bla = baum.seek(3);
