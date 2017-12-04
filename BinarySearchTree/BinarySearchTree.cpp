@@ -56,6 +56,7 @@ Node * BinarySearchTree::seek(string &value)
 
 		if (i->getValue() == value)
 			return i;
+
 	}
 
 	return NULL;
@@ -185,6 +186,8 @@ bool BinarySearchTree::destroy(Node *res)
 	return true;
 }
 
+
+
 bool BinarySearchTree::destroy(string value)
 {
 	bool ergebnis = false;
@@ -198,36 +201,43 @@ bool BinarySearchTree::destroy(string value)
 	return ergebnis;
 }
 
-bool BinarySearchTree::check(Node *node)
+bool BinarySearchTree::check(Node * start)
 {
-	if (node->left == NULL && node->right == NULL)
-		return true;
-	else if (node->left == NULL)
-	{
-		if (node->getKey() < node->right->getKey())
-			check(node->right);
-		else
-			throw string("fail");
-	}
-	else if (node->right == NULL)
-	{
-		if (node->left->getKey() < node->getKey())
-			check(node->left);
-		else
-			throw string("fail");
-	}
-	else
-	{
-		if (node->left->getKey() < node->getKey() && node->getKey() < node->right->getKey())
-		{
-			check(node->left);
-			check(node->right);
-		}
-		else
-			throw string("fail");
-	}
+	if (start->left != NULL)
+		checkChildsLeft(start->left, start->getKey());
+	if (start->right != NULL)
+		checkChildsRight(start->right, start->getKey());
+
+	if (start->left != NULL)
+		check(start->left);
+	if (start->right != NULL)
+		check(start->right);
 
 	return true;
+}
+
+void BinarySearchTree::checkChildsRight(Node *node, const int vergleiche)
+{
+
+	if (!(vergleiche < node->getKey()))
+		throw string("Fail");
+	
+	if (node->left != NULL)
+		checkChildsRight(node->left, vergleiche);
+	if (node->right != NULL)
+		checkChildsRight(node->right, vergleiche);
+}
+
+void BinarySearchTree::checkChildsLeft(Node *node, const int vergleiche)
+{
+
+	if (!(node->getKey() < vergleiche))
+		throw string("Fail");
+
+	if (node->left != NULL)
+		checkChildsLeft(node->left, vergleiche);
+	if (node->right != NULL)
+		checkChildsLeft(node->right, vergleiche);
 }
 
 void BinarySearchTree::displayTree()

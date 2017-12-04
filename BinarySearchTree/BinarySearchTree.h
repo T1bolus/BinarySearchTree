@@ -14,6 +14,8 @@ public:
 	bool destroy(string value);
 	bool destroy(Node*);
 	bool check(Node *start);
+	void checkChildsRight(Node *start, const int vergleich);
+	void checkChildsLeft(Node *start, const int vergleich);
 	void displayTree();
 //private:
 
