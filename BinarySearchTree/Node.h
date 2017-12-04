@@ -12,6 +12,7 @@ public:
 		right = NULL;
 		left = NULL;
 		parent = NULL;
+		black = true;
 	}
 
 	//virtual ~Node()
@@ -28,10 +29,14 @@ public:
 		right = NULL;
 		left = NULL;
 		parent = NULL;
+		black = true;
 	}
 
 	int getKey() { return key; }
 	string getValue() { return value; }
+	bool isBlack() { return black; }
+	bool setBlack() { black = true; }
+	bool setRed() { black = false; }
 
 
 	Node* right;
@@ -39,8 +44,10 @@ public:
 	Node* parent;
 	string value;
 
+
 //private:
 	int key;
+	bool black;
 	//char *value;
 	/*usign valueLength;*/
 };

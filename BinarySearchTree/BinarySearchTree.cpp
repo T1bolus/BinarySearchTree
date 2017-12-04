@@ -34,6 +34,33 @@ Node * BinarySearchTree::seek(int k)
 	return NULL;
 }
 
+Node * BinarySearchTree::seek(string &value)
+{
+	queue<Node *> st;
+	if (root == NULL) return NULL;
+
+	if (root->left != NULL)
+		st.push(root->left);
+	if (root->right != NULL)
+		st.push(root->right);
+
+	while (!st.empty())
+	{
+		Node *i = st.front();
+		st.pop();
+
+		if (i->left != NULL)
+			st.push(i->left);
+		if (i->right != NULL)
+			st.push(i->right);
+
+		if (i->getValue() == value)
+			return i;
+	}
+
+	return NULL;
+}
+
 bool BinarySearchTree::insert(Node *u)
 {
 	if (root == NULL) { root = u; return true; }
@@ -74,7 +101,12 @@ bool BinarySearchTree::insert(Node *u)
 bool BinarySearchTree::destroy(int kValue)
 {
 	Node *res = seek(kValue);
-	if(res == NULL)
+	return destroy(res);
+}
+
+bool BinarySearchTree::destroy(Node *res)
+{
+	if (res == NULL)
 		return false;
 	bool isNotRoot = res->parent;
 
@@ -89,75 +121,81 @@ bool BinarySearchTree::destroy(int kValue)
 			else
 				res->parent->left = NULL;
 		}
+		else root = NULL;
 	}
 	else if (res->left == NULL) //Wenn links kein Child
 	{
-		//Einzigen Rechten Parent ersetzen des rechten Parents
-		res->right->parent = res->parent;
-
-		if(isNotRoot)
+		if (isNotRoot)
 		{
+			//Einzigen Rechten Parent ersetzen des rechten Parents
+			res->right->parent = res->parent;
+
 			//Parent neues Child beibringen
 			if (res->parent->right == res)
 				res->parent->right = res->right;
 			else
 				res->parent->left = res->right;
 		}
-		
+		else
+			root = res->right;
+
 	}
 	else if (res->right == NULL) //Wenn rechts kein Child
 	{
-		//Einzigen Rechten Parent ersetzen des rechten Parents
-		res->left->parent = res->parent;
-
 		if (isNotRoot)
 		{
+			//Einzigen Rechten Parent ersetzen des rechten Parents
+			res->left->parent = res->parent;
+
 			//Parent neues Child beibringen
 			if (res->parent->right == res)
 				res->parent->right = res->left;
 			else
 				res->parent->left = res->left;
 		}
+		else
+			root = res->left;
+
 	}
 	else
 	{
-		Node *parent_replacement = res;
-		Node *replacement = res->left;
-		int is_left = 1; /* Replacement is left child of parent */
-		while (replacement->right != NULL)
+		if (isNotRoot)
 		{
-			parent_replacement = replacement;
-			replacement = replacement->right;
-			is_left = 0; // Replacement is right child of parent
-		}
-
-
-		/* Copy data */
-		res = replacement;
-		/* Two broad cases
-		* i) Replacement is left child of ptr
-		*   (and could be having 0 or 1 children)
-		* ii) Replacement is right (grand)child of ptr->left
-		*/
-
-		if (is_left)
-		{
-			// case i : replacement is left child of ptr.
-			assert(replacement->right == NULL);
-			res->left = replacement->left;
-			//delete replacement;
+			//Parent beibringen das der linke Knoten sein neues Child ist
+			if (res->parent->right == res)
+				res->parent->right = res->left;
+			else
+				res->parent->left = res->left;
 		}
 		else
-		{
-			// case ii : replacement is right grand(child of ptr->left
-			parent_replacement->right = replacement->left;
-			//delete replacement;
-		}
+			root = res->left;
+
+		//Größten Knoten des neuen Child suchen
+		Node *buf = res->left;
+		while (buf->right != NULL)
+			buf = buf->right;
+
+		//An diesen dann den alten Rechten Zweig anhängen
+		buf->right = res->right;
+
+
 	}
 
 	delete res;
 	return true;
+}
 
+bool BinarySearchTree::destroy(string value)
+{
+	bool ergebnis = false;
+	Node *res = seek(value);
+	while (res != NULL)
+	{
+		ergebnis = true;
+		destroy(res);
+		res = seek(value);
+	}
+	return ergebnis;
 }
 
 bool BinarySearchTree::check(Node *node)
@@ -180,7 +218,7 @@ bool BinarySearchTree::check(Node *node)
 	}
 	else
 	{
-		if (node->left->getKey() < node->getKey() < node->right->getKey())
+		if (node->left->getKey() < node->getKey() && node->getKey() < node->right->getKey())
 		{
 			check(node->left);
 			check(node->right);
@@ -190,5 +228,33 @@ bool BinarySearchTree::check(Node *node)
 	}
 
 	return true;
+}
+
+void BinarySearchTree::displayTree()
+{
+	queue<Node *> st;
+	if (root == NULL) return;
+	cout << root->getKey() << endl;
+	
+	if(root->left != NULL)
+	st.push(root->left);
+	if (root->right != NULL)
+	st.push(root->right);
+
+	while (!st.empty())
+	{
+		Node *i = st.front();
+		st.pop();
+
+		if (i->left != NULL)
+			st.push(i->left);
+		if (i->right != NULL)
+			st.push(i->right);
+
+		cout << i->getKey() << endl;
+	}
+	cout << "_________________\n";
+
+
 }
 

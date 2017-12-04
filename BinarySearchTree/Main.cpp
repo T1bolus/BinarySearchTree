@@ -20,44 +20,53 @@ int main()
 
 	Node *buf = new Node("root", 10);
 	baum.insert(buf);
-	buf = new Node("hjdkashdjksajk", 5);
+	buf = new Node("g", 5);
 	baum.insert(buf);
-	buf = new Node("hjdk435435sajk", 15);
+	buf = new Node("a", 15);
 	baum.insert(buf);
-	buf = new Node("hjdka3456456jk", 3);
+	buf = new Node("a", 3);
 	baum.insert(buf);
-	buf = new Node("hjdkash13576jk", 8);
+	buf = new Node("a", 8);
 	baum.insert(buf);
-	buf = new Node("hjdka4667567jk", 12);
+	buf = new Node("v", 12);
 	baum.insert(buf);
-	buf = new Node("hjdkas123348jk", 20);
+	buf = new Node("v", 20);
 	baum.insert(buf);
-	buf = new Node("hjd1323557sajk", 1);
+	buf = new Node("b", 1);
 	baum.insert(buf);
-	buf = new Node("hjdka8908908jk", 6);
+	buf = new Node("n", 6);
 	baum.insert(buf);
-	buf = new Node("hjd345h324235k", 13);
+	buf = new Node("n", 13);
 	baum.insert(buf);
 
-	//baum.root->left->key = 100;
-	
+
+
 	try {
-		cout << baum.check(baum.root) << endl;
+		cout << boolalpha << baum.check(baum.root) << endl;
 	}
 	catch (...)
 	{
 		cerr << "Fehler!\n";
 	}
 
-	Node *bla = baum.seek(5);
-	cout << bla->value << endl;
-	baum.destroy(5);
-	bla = baum.seek(5);
+	Node *bla = baum.seek(3);
+	if (bla != NULL)
+		cout << bla->value << endl;
+	else
+		cout << "Cant find dis Node!" << endl;
+
+	baum.displayTree();
+	baum.destroy("b");
+	baum.displayTree();
+
+
+	bla = baum.seek(3);
 	if (bla != NULL)
 		cout << bla->value << endl;
 	else
 		cout << "Cant find dis Node!"<<endl;
 
+
 	try {
 		cout << baum.check(baum.root) << endl;
 	}
@@ -66,4 +75,5 @@ int main()
 		cerr << "Fehler!\n";
 	}
 
+	cin.get();
 }
