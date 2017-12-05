@@ -33,8 +33,8 @@ public:
 	}
 
 	int getKey() { return key; }
-	string getValue() { return value; }
-	//bool isRed() { return red; }
+	const string &getValue() { return value; }
+	bool isRed() { return red; }
 	bool setBlack() { red = false; }
 	bool setRed() { red = true; }
 
@@ -42,12 +42,13 @@ public:
 	Node* right;
 	Node* left;
 	Node* parent;
-	string value;
-
-
-//private:
-	int key;
 	bool red;
+
+
+private:
+	int key;
+	string value;
+	
 	//char *value;
 	/*usign valueLength;*/
 };

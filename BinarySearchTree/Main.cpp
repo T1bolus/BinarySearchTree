@@ -3,8 +3,6 @@
 
 int main()
 {
-	srand(time(0));
-
 	const int min = 0;
 	const int max = 1000000-1;
 	default_random_engine generator;
@@ -16,17 +14,24 @@ int main()
 	{
 		traversierung.push_back(i);
 	}
-	for (size_t i = 0; i < max*5; i++)
+	for (size_t i = 0; i < max*10; i++)
 	{
 		swap(traversierung[distribution(generator)], traversierung[distribution(generator)]);
 	}
 
 	RBSearchTree baum;
+
+	vector <Node*> a;
+	for (size_t i = 0; i < max; i++)
+	{
+		a.push_back(new Node(string("Node_") + to_string(traversierung[i] / 10), traversierung[i]));
+	}
+
 	cout << "Insert..\n";
 	int end, start = clock();
 	for (size_t i = 1; i < max; i++)
 	{
-		baum.insert(new Node(string("Node_") + to_string(traversierung[i] / 10), traversierung[i]));
+		baum.insert(a[i]);
 
 	}
 	end = clock();
@@ -72,7 +77,7 @@ int main()
 	//if (bla != NULL)
 	//	cout << bla->value << endl;
 	//else
-	//	cout << "Cant find dis Node!" << endl;
+	//	cout << "Cant find this Node!" << endl;
 
 	//baum.displayTree();
 	cout << "Tree height: " << baum.getHeight() << endl;
@@ -89,7 +94,7 @@ int main()
 	//if (bla != NULL)
 	//	cout << bla->value << endl;
 	//else
-	//	cout << "Cant find dis Node!"<<endl;
+	//	cout << "Cant find this Node!"<<endl;
 
 
 	//try {

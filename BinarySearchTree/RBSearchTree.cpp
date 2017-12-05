@@ -105,7 +105,7 @@ void RBSearchTree::repairInsert(Node* node)
 						this->rotateLeft(node->parent->parent);
 					}
 				}
-			////Kontrolle, ob neuer node vater bzw grossvater hat
+			//ob parent des parent vorhanden
 			if (!node->parent || !node->parent->parent)
 				break;
 		}
@@ -116,12 +116,13 @@ void RBSearchTree::repairInsert(Node* node)
 void RBSearchTree::rotateLeft(Node * node)
 {
 	Node* y = node->right;
-	node->right = (y->left);
+	node->right = y->left;
 
-	if (y->left) y->left->parent = node;
+	if (y->left)
+		y->left->parent = node;
+
 	if (node == root) 
 		root = y;
-	
 	else
 	{
 		if (node == node->parent->left) 
@@ -129,10 +130,10 @@ void RBSearchTree::rotateLeft(Node * node)
 		else 
 			node->parent->right = y;
 	
-		y->parent = (node->parent);
+		y->parent = node->parent;
 	}
-	y->left = (node);
-	node->parent = (y);
+	y->left = node;
+	node->parent = y;
 }
 
 void RBSearchTree::rotateRight(Node * node)
@@ -140,10 +141,11 @@ void RBSearchTree::rotateRight(Node * node)
 	Node* y = node->left;
 	node->left = y->right;
 
-	if (y->right) y->right->parent = node;
+	if (y->right) 
+		y->right->parent = node;
+
 	if (node == root) 
 		root = y;
-	
 	else
 	{
 		if (node == node->parent->right) 
@@ -166,6 +168,7 @@ bool RBSearchTree::check(Node * start, unsigned int step)
 		checkChildsRight(start->right, start->getKey());
 
 	//RB Tests
+	//Fall1:
 	//Wurzel schwarz
 	if (step == 0 && start->red != false)
 	{
@@ -221,9 +224,9 @@ unsigned int RBSearchTree::bheight()
 
 bool RBSearchTree::checkBheight(Node* node) {
 	int height = 0;
-	bool ergebnis = true;
-	bheight(height, node, ergebnis);
-	return ergebnis;
+	bool result = true;
+	bheight(height, node, result);
+	return result;
 }
 
 void RBSearchTree::bheight(int &height, Node *node, bool &result) {
