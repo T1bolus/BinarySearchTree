@@ -13,171 +13,153 @@ RBSearchTree::~RBSearchTree()
 
 }
 
-bool RBSearchTree::insert(Node *z)
+bool RBSearchTree::insert(Node *node)
 {
-	Node *y = NULL, *x = root;
-	while (x != NULL)
+	Node* y = NULL;
+	Node* x = root;
+	while (x != NULL) 
 	{
 		y = x;
-		if (z->getKey() < x->getKey())
+		if (node->getKey() < x->getKey()) 
 			x = x->left;
-		else
+		else 
 			x = x->right;
+		
 	}
-	z->parent = y;
+	node->parent = y;
+	if (y == NULL) 
+		root = node;
 
-	if (y == NULL)
-		root = z;
-	else
+	else 
 	{
-		if (z->getKey() < y->getKey())
-			y->left = z;
-		else
-			y->right = z;
+		if (node->getKey() < y->getKey())
+			y->left = node;
+		else 
+			y->right = node;
 	}
-
-	z->left = NULL;
-	z->right = NULL;
-	z->red = true;
-	repairInsert(z);
+	node->left = NULL;
+	node->right = NULL;
+	node->red = true;
+	this->repairInsert(node);
 
 	return true;
 }
 
-void RBSearchTree::repairInsert(Node * z)
+void RBSearchTree::repairInsert(Node* node)
 {
-	bool uncle;
 
-	if (z->parent != NULL)
+	if (node->parent)
 	{
-		while (z->parent->red)
+		while (node->parent->red) 
 		{
-			if (z->parent->parent)
-			{
-				if (z->parent == z->parent->parent->right)
+			if (node->parent->parent) 
+				if (node->parent == node->parent->parent->left)
 				{
-					Node *y = z->parent->parent->right;
-					
-					if (y) 
-						uncle = y->right;
+					//Fall 1
+					Node* y = node->parent->parent->right;
+
+					if (y && y->red)
+					{
+						node->parent->red = false;
+						y->red = false;
+						node->parent->parent->red = true;
+						node = node->parent->parent;
+					}
+					//Fall 2
 					else 
-						uncle = false;
-
-					if (uncle)
 					{
-						z->parent->red = false;
-						y->red = false;
-						z->parent->parent->red = true;
-						z = z->parent->parent;
-					}
-					//Fall2
-					else
-					{
-						if (z == z->parent->right)
+						if (node == node->parent->right) 
 						{
-							z = z->parent;
-							rotateLeft(z);
+							node = node->parent;
+							this->rotateLeft(node);
 						}
-						//Fall3
-						z->parent->red = false;
-						z->parent->parent->red = true;
-						rotateRight(z->parent->parent);
+						//Fall 3
+						node->parent->red = false;
+						node->parent->parent->red = true;
+						this->rotateRight(node->parent->parent);
 					}
 				}
-				else
+				else 
 				{
-					//Fall4:
-					Node *y = z->parent->parent->left;
-					//z->parent->parent->left;
+					//Fall 4
+					Node* y = node->parent->parent->left;
 
-					if (y)
-						uncle = y->right;
-					else
-						uncle = false;
-
-					if (uncle)
+					if (y && y->red)
 					{
-						z->parent->red = false;
+						node->parent->red = false;
 						y->red = false;
-						z->parent->parent->red = true;
-						z = z->parent->parent;
+						node->parent->parent->red = true;
+						node = node->parent->parent;
 					}
-					else
+					//Fall 5
+					else 
 					{
-						//Fall5:
-						if (z == z->parent->left)
+						if (node == node->parent->left) 
 						{
-							z = z->parent;
-							rotateRight(z);
+							node = node->parent;
+							this->rotateRight(node);
 						}
-						//fall6:
-						z->parent->red = false;
-						z->parent->parent->red = true;
-						rotateLeft(z->parent->parent);
+						//Fall 6
+						node->parent->red = false;
+						node->parent->parent->red = true;
+						this->rotateLeft(node->parent->parent);
 					}
 				}
-			}
-			if (z->parent != NULL)
-			{
-				if (!z->parent->parent) break;
-			}
-			else
+			////Kontrolle, ob neuer node vater bzw grossvater hat
+			if (!node->parent || !node->parent->parent)
 				break;
-
 		}
 	}
 	root->red = false;
 }
 
-void RBSearchTree::rotateLeft(Node * x)
+void RBSearchTree::rotateLeft(Node * node)
 {
-	Node *y = x->right;
-	if (!y) return;
-	x->right = y->left;
+	Node* y = node->right;
+	node->right = (y->left);
 
-	if (y && y->left)
-		y->left->parent = x;
-	if (x == root)
+	if (y->left) y->left->parent = node;
+	if (node == root) 
 		root = y;
+	
 	else
 	{
-		if (root->parent && x == root->parent->left)
-			x->parent->left = y;
-		else
-			x->parent->right = y;
-
-		y->parent = x->parent;
+		if (node == node->parent->left) 
+			node->parent->left = y;
+		else 
+			node->parent->right = y;
+	
+		y->parent = (node->parent);
 	}
-	y->left = x;
-	x->parent = y;
+	y->left = (node);
+	node->parent = (y);
 }
 
-void RBSearchTree::rotateRight(Node * x)
+void RBSearchTree::rotateRight(Node * node)
 {
-	Node *y = x->left;
-	if (!y) return;
-	x->left = y->right;
+	Node* y = node->left;
+	node->left = y->right;
 
-	if (y && y->right)
-		y->right->parent = x;
-	if (x == root)
+	if (y->right) y->right->parent = node;
+	if (node == root) 
 		root = y;
+	
 	else
 	{
-		if (root->parent && x == root->parent->left)
-			x->parent->right = y;
-		else
-			x->parent->left = y;
+		if (node == node->parent->right) 
+			node->parent->right = y;
+		else 
+			node->parent->left = y;
 		
-		y->parent = x->parent;
+		y->parent = node->parent;
 	}
-	y->right = x;
-	x->parent = y;
+	y->right = node;
+	node->parent = y;
 }
 
 bool RBSearchTree::check(Node * start, unsigned int step)
 {
-	//Prüfen ob BinarySearchTree Eigenschaften sind erfüllt
+	////Prüfen ob BinarySearchTree Eigenschaften sind erfüllt
 	if (start->left != NULL)
 		checkChildsLeft(start->left, start->getKey());
 	if (start->right != NULL)

@@ -6,7 +6,7 @@ int main()
 	srand(time(0));
 
 	const int min = 0;
-	const int max = 100-1;
+	const int max = 1000000-1;
 	default_random_engine generator;
 	uniform_int_distribution<int> distribution(min, max);
 
@@ -55,9 +55,13 @@ int main()
 	//baum.insert(buf);
 
 
-	cout << "Da height:" << baum.bheight() << endl;
+	cout << "SchwarzbaumHoehe height:" << baum.bheight() << endl;
 	try {
+		int end, start = clock();
 		cout << boolalpha << baum.check(baum.root) << endl;
+
+		end = clock();
+		cout << "Time: " << ((end - start) * 1000) / CLOCKS_PER_SEC << endl;
 	}
 	catch (...)
 	{
