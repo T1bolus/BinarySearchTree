@@ -16,12 +16,13 @@ public:
 	void displayTree();
 	unsigned int getHeight();
 	double getAvgLevel();
-//private:
 
+	Node* root;
+
+private:
 	void calcHigh(Node *, unsigned int step);
 	unsigned int height;
 	unsigned int stufeSumme;
 	unsigned int anzahl;
-	Node* root;
 };
 
