@@ -46,6 +46,8 @@ bool RBSearchTree::insert(Node *z)
 
 void RBSearchTree::repairInsert(Node * z)
 {
+	bool uncle;
+
 	if (z->parent != NULL)
 	{
 		while (z->parent->red)
@@ -55,10 +57,13 @@ void RBSearchTree::repairInsert(Node * z)
 				if (z->parent == z->parent->parent->right)
 				{
 					Node *y = z->parent->parent->right;
-					if (y && y->red == true)
-					{
 					
-					if (y && y->red == true)
+					if (y) 
+						uncle = y->right;
+					else 
+						uncle = false;
+
+					if (uncle)
 					{
 						z->parent->red = false;
 						y->red = false;
@@ -78,16 +83,19 @@ void RBSearchTree::repairInsert(Node * z)
 						z->parent->parent->red = true;
 						rotateRight(z->parent->parent);
 					}
-					}
 				}
 				else
 				{
 					//Fall4:
 					Node *y = z->parent->parent->left;
-					if (y->red == true)
-					{
 					//z->parent->parent->left;
-					if (y && y->red == true)
+
+					if (y)
+						uncle = y->right;
+					else
+						uncle = false;
+
+					if (uncle)
 					{
 						z->parent->red = false;
 						y->red = false;
@@ -107,7 +115,6 @@ void RBSearchTree::repairInsert(Node * z)
 						z->parent->parent->red = true;
 						rotateLeft(z->parent->parent);
 					}
-					}
 				}
 			}
 			if (z->parent != NULL)
@@ -125,8 +132,8 @@ void RBSearchTree::repairInsert(Node * z)
 void RBSearchTree::rotateLeft(Node * x)
 {
 	Node *y = x->right;
-	if (x->right)
-		x->right = y->left;
+	if (!y) return;
+	x->right = y->left;
 
 	if (y && y->left)
 		y->left->parent = x;
@@ -134,13 +141,11 @@ void RBSearchTree::rotateLeft(Node * x)
 		root = y;
 	else
 	{
-		if (root->parent)
-		{
-			if (x == root->parent->left)
-				x->parent->left = y;
-			else
-				x->parent->right = y;
-		}
+		if (root->parent && x == root->parent->left)
+			x->parent->left = y;
+		else
+			x->parent->right = y;
+
 		y->parent = x->parent;
 	}
 	y->left = x;
@@ -150,8 +155,8 @@ void RBSearchTree::rotateLeft(Node * x)
 void RBSearchTree::rotateRight(Node * x)
 {
 	Node *y = x->left;
-	if (x->right)
-		x->left = y->right;
+	if (!y) return;
+	x->left = y->right;
 
 	if (y && y->right)
 		y->right->parent = x;
@@ -159,13 +164,10 @@ void RBSearchTree::rotateRight(Node * x)
 		root = y;
 	else
 	{
-		if (root->parent)
-		{
-			if (x == root->parent->left)
-				x->parent->right = y;
-			else
-				x->parent->left = y;
-		}
+		if (root->parent && x == root->parent->left)
+			x->parent->right = y;
+		else
+			x->parent->left = y;
 		
 		y->parent = x->parent;
 	}

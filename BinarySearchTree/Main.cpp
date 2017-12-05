@@ -6,7 +6,7 @@ int main()
 	srand(time(0));
 
 	const int min = 0;
-	const int max = 1000000-1;
+	const int max = 100-1;
 	default_random_engine generator;
 	uniform_int_distribution<int> distribution(min, max);
 
