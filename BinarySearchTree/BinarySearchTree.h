@@ -1,5 +1,3 @@
-#pragma once
-#include "Include.h"
 #include "Node.h"
 
 class BinarySearchTree

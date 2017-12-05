@@ -195,7 +195,8 @@ bool RBSearchTree::check(Node * start, unsigned int step)
 	}
 	//Fall4:
 	//Prüfe ob alle Stränge gleich lang sind
-	if (!checkBheight(start)) return false;
+	if (!checkBheight(start)) throw string("fail");
+
 
 
 

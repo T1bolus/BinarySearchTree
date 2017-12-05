@@ -1,4 +1,3 @@
-#include "BinarySearchTree.h"
 #include "RBSearchTree.h"
 
 int main()
