@@ -71,6 +71,7 @@ bool BinarySearchTree::insert(Node *u)
 			
 	}
 	root = u;
+	return true;
 }
 
 bool BinarySearchTree::destroy(int kValue)
@@ -189,6 +190,7 @@ void BinarySearchTree::seeknDestroy(string value)
 
 bool BinarySearchTree::check(Node * start)
 {
+	if (start == NULL) return false;
 	if (start->left != NULL)
 		checkChildsLeft(start->left, start->getKey());
 	if (start->right != NULL)
@@ -204,7 +206,7 @@ bool BinarySearchTree::check(Node * start)
 
 void BinarySearchTree::checkChildsRight(Node *node, const int vergleiche)
 {
-
+	if (!node) return;
 	if (!(vergleiche < node->getKey()))
 		throw string("Fail");
 	
@@ -216,7 +218,7 @@ void BinarySearchTree::checkChildsRight(Node *node, const int vergleiche)
 
 void BinarySearchTree::checkChildsLeft(Node *node, const int vergleiche)
 {
-
+	if (!node) return;
 	if (!(node->getKey() < vergleiche))
 		throw string("Fail");
 
@@ -284,4 +286,5 @@ double BinarySearchTree::getAvgLevel()
 
 	return (double)stufeSumme / (double)anzahl;
 }
+
 

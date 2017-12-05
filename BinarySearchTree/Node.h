@@ -12,7 +12,7 @@ public:
 		right = NULL;
 		left = NULL;
 		parent = NULL;
-		black = true;
+		red = false;
 	}
 
 	//virtual ~Node()
@@ -29,14 +29,14 @@ public:
 		right = NULL;
 		left = NULL;
 		parent = NULL;
-		black = true;
+		red = false;
 	}
 
 	int getKey() { return key; }
 	string getValue() { return value; }
-	bool isBlack() { return black; }
-	bool setBlack() { black = true; }
-	bool setRed() { black = false; }
+	//bool isRed() { return red; }
+	bool setBlack() { red = false; }
+	bool setRed() { red = true; }
 
 
 	Node* right;
@@ -47,7 +47,7 @@ public:
 
 //private:
 	int key;
-	bool black;
+	bool red;
 	//char *value;
 	/*usign valueLength;*/
 };
